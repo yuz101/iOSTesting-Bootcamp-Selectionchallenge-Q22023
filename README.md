@@ -60,7 +60,7 @@ And finally both solutions to the challenges must work independently; it means t
 
 
 ## Don’t forget to fill out the Google Form with your forked repository!
-Remember, you must send your forked repository by filling out the following **[Google Form](https://forms.gle/g7QefxUoFpPoT72387)** you will have until Tuesday, April 25, to be considered for the Wizeline Academy iOS Testing Bootcamp! (The sooner you send it, the more chances you have of being selected). 
+Remember, you must send your forked repository by filling out the following **[Google Form](https://forms.gle/938qDCKGu3mbeQWN9)** you will have until Tuesday, April 25, to be considered for the Wizeline Academy iOS Testing Bootcamp! (The sooner you send it, the more chances you have of being selected). 
 
 Thanks for completing the challenge, we can’t wait to see you soon!
 
