@@ -15,14 +15,42 @@ class ViewController: UICollectionViewController {
         static var cellSize: CGFloat?
     }
     
+    private var loadingIndicator: UIActivityIndicatorView!
     private lazy var urls: [URL] = URLProvider.urls
+    private var imageList: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = Constants.title
+        setupLoadingIndicator()
+        getAllImages()
+    }
+    
+    func setupLoadingIndicator() {
+        loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.color = .gray
+        loadingIndicator.center = view.center
+        loadingIndicator.hidesWhenStopped = true
+        view.addSubview(loadingIndicator)
+        loadingIndicator.startAnimating()
     }
 
-
+    func getAllImages() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            ImageAPI.getAllImage(withURLs: self.urls) { result in
+                switch result {
+                case .success(let images):
+                    self.imageList.append(contentsOf: images)
+                    DispatchQueue.main.async {
+                        self.loadingIndicator.stopAnimating()
+                        self.collectionView.reloadData()
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
 }
 
 
@@ -34,17 +62,12 @@ class ViewController: UICollectionViewController {
 // MARK: - UICollectionView DataSource, Delegate
 extension ViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        urls.count
+        self.imageList.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as? ImageCell else { return UICollectionViewCell() }
-        
-        let url = urls[indexPath.row]
-        let data = try? Data(contentsOf: url)
-        let image = UIImage(data: data!)
-        cell.display(image)
-        
+        cell.display(self.imageList[indexPath.item])
         return cell
     }
 }
